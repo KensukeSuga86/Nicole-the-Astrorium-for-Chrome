@@ -77,12 +77,21 @@
 #timeSunriseBtn:hover,#timeSunsetBtn:hover{border-color:#ffd65c;background:#3a300d;color:#fff2b3}
 #timeMoonriseBtn,#timeMoonsetBtn{border-color:#9aaab8;background:#1a2027;color:#eef3f7;box-shadow:inset 0 0 0 1px rgba(230,237,243,.10)}
 #timeMoonriseBtn:hover,#timeMoonsetBtn:hover{border-color:#d7e0e7;background:#252d35;color:#ffffff}
+
+/* In-app quick manual */
+.manual-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(1,6,14,.82);backdrop-filter:blur(7px);padding:3vh 3vw}
+.manual-modal.open{display:flex;align-items:stretch;justify-content:center}
+.manual-dialog{width:min(1180px,94vw);height:94vh;margin:auto;background:#08111d;border:1px solid #2a5276;border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.55);display:flex;flex-direction:column}
+.manual-head{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid #1c3958;background:#0c1725}
+.manual-head b{color:#9fd0f4}.manual-head .spacer{flex:1}.manual-frame{border:0;display:block;width:100%;height:100%;background:#07101c}
+#openManual{border-color:#4b86b4;color:#d7efff}
+#openManual:hover{background:#163451;border-color:#75b7e6}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#061a44">
 <link rel="apple-touch-icon" href="./icon-180.png">
 </head><body><div id="app">
-<header class="top"><div class="brand">Nicole the Astrorium <span class="small muted">v1.1.0</span></div><button id="openProjector">観客画面を開く</button><button id="openMediaLibrary">メディアライブラリ</button><button id="shortcutHelp">ショートカット一覧</button><button id="openDisplaySettings">投影表示設定</button><details class="settings-menu" id="settingsMenu"><summary>設定</summary><div class="settings-popover"><button id="openConstellationEditor">星座を編集</button><button id="openDescriptionEditor">共通解説を編集</button><button id="resetLayout">レイアウトを初期化</button><button id="checkDbUpdate">星カタログを取り込む</button></div></details><button id="exitApp">アプリを終了</button><div class="spacer"></div><span class="sync"><span class="status-dot"></span> <span id="bootStatus">起動中</span></span><span class="sync" id="dataStatus"></span></header>
+<header class="top"><div class="brand">Nicole the Astrorium <span class="small muted">v1.1.0</span></div><button id="openProjector">観客画面を開く</button><button id="openMediaLibrary">メディアライブラリ</button><button id="shortcutHelp">ショートカット一覧</button><button id="openDisplaySettings">投影表示設定</button><button id="openManual">使い方</button><details class="settings-menu" id="settingsMenu"><summary>設定</summary><div class="settings-popover"><button id="openConstellationEditor">星座を編集</button><button id="openDescriptionEditor">共通解説を編集</button><button id="resetLayout">レイアウトを初期化</button><button id="checkDbUpdate">星カタログを取り込む</button></div></details><button id="exitApp">アプリを終了</button><div class="spacer"></div><span class="sync"><span class="status-dot"></span> <span id="bootStatus">起動中</span></span><span class="sync" id="dataStatus"></span></header>
 <main class="workspace" id="workspace">
 <section class="zone left" id="leftZone">
 <div class="panel obs-panel" id="obsPanel"><div class="panel-title"><span>📍 観測条件</span><div class="panel-head-actions"><button class="small" id="openMap">地図</button></div></div><div class="panel-body scroll"><div class="col"><label>日時</label><input id="obsTime" step="1" type="datetime-local"/></div><div class="obs-actions"><button id="sunsetBtn">今日の日没−30分</button><button id="nowBtn">現在時刻</button><button id="gpsBtn">現在地</button></div><div class="col" style="margin-top:6px"><label>地名検索</label><div class="row"><input id="placeSearch" placeholder="例：帯広市"/><button id="placeSearchBtn">検索</button></div><div class="search-results" id="placeResults"></div></div><div class="col" style="margin-top:6px"><label>地点名</label><input id="locName"/></div><div class="obs-grid" style="margin-top:5px"><div class="col"><label>緯度</label><input id="lat" step=".01" type="number"/></div><div class="col"><label>経度</label><input id="lon" step=".01" type="number"/></div><div class="col"><label>標高 m</label><input id="elev" step=".1" type="number"/></div><div class="col"><label>主要都市</label><select id="city"><option value="">選択</option></select></div></div><div class="obs-actions"><button id="applyObs">この条件を適用</button></div><div class="col" style="margin-top:6px"><label>お気に入り</label><select id="favorite"><option value="">お気に入り地点</option></select></div><div class="obs-actions"><button id="saveFavorite">保存</button><button id="applyFavorite">適用</button><button id="deleteFavorite">削除</button></div><div class="small muted" id="obsStatus" style="margin-top:6px"></div><div class="obs-calendar"><div class="mooncal-title-row"><div class="section-label">🌙 月齢カレンダー</div><button class="small" id="moonCalToggle">−</button></div><div id="moonCalContent"><div class="mooncal-head"><button id="moonPrev">◀</button><div class="mooncal-month" id="moonMonthLabel">—</div><button id="moonNext">▶</button><button id="moonToday">今月</button></div><div class="mooncal-grid" id="moonCalendar"></div><div class="mooncal-detail" id="moonCalendarDetail">日付を選ぶと、日の出・日の入り・天文薄明・月の出入りを選択できます。</div></div></div></div></div><div class="splitter-h" id="leftSearchSplitter"></div><div class="panel search-panel" id="searchPanel"><div class="panel-title"><span>🔎 星座・天体検索</span></div><div class="panel-body scroll"><div class="search-panel-controls"><input id="objectSearch" type="search" placeholder="オリオン / M31 / 木星 / ベガ" autocomplete="off"/><button id="objectSearchBtn">検索</button></div><div class="object-search-results" id="objectSearchResults"><div class="object-search-empty">検索語を入力してください。</div></div></div></div>
@@ -134,4 +143,21 @@
 <label class="display-setting"><span>天の川 明るさ</span><input id="milkyWayBrightness" type="range" min="25" max="200" step="5"/><output id="milkyWayBrightnessOut">100%</output></label>
 <div class="row"><button id="resetDisplay">投影表示設定を初期値へ</button></div><div class="display-note">設定はこのMacのブラウザに保存され、次回起動時も復元します。星の明るさはGPU恒星描画とCanvasフォールバックの両方へ反映します。</div>
 </div></div></div></div>
-<script src="./art-image-store.js"></script><script src="./media-library.js"></script><script src="./location-favorites.js"></script><script src="./db-bridge.js"></script><script src="./database/db-bundle.js"></script><script src="./assets/art-data.js"></script><script src="./places-offline.js"></script><script src="./database-bootstrap.js"></script><script src="./bootstrap-presenter.js"></script><script src="./pwa-register.js"></script></body></html>
+
+<div class="manual-modal" id="manualModal" aria-hidden="true"><div class="manual-dialog" role="dialog" aria-modal="true" aria-label="Nicole the Astrorium 使い方マニュアル"><div class="manual-head"><b>📖 Nicole the Astrorium 簡易使い方マニュアル</b><span class="small muted">v1.1.0</span><div class="spacer"></div><button id="manualOpenTab">別タブで開く</button><button id="closeManual">✕ 閉じる</button></div><iframe class="manual-frame" id="manualFrame" src="./quick-manual.html" title="Nicole the Astrorium 簡易使い方マニュアル"></iframe></div></div>
+<script src="./art-image-store.js"></script><script src="./media-library.js"></script><script src="./location-favorites.js"></script><script src="./db-bridge.js"></script><script src="./database/db-bundle.js"></script><script src="./assets/art-data.js"></script><script src="./places-offline.js"></script><script src="./database-bootstrap.js"></script><script src="./bootstrap-presenter.js"></script><script src="./pwa-register.js"></script><script>
+(()=>{
+  const open=document.getElementById('openManual');
+  const modal=document.getElementById('manualModal');
+  const close=document.getElementById('closeManual');
+  const tab=document.getElementById('manualOpenTab');
+  if(!open||!modal) return;
+  const show=()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');};
+  const hide=()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');};
+  open.addEventListener('click',show);
+  close?.addEventListener('click',hide);
+  tab?.addEventListener('click',()=>window.open('./quick-manual.html','_blank','noopener'));
+  modal.addEventListener('click',e=>{if(e.target===modal) hide();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open')){e.preventDefault();e.stopPropagation();hide();}},true);
+})();
+</script></body></html>
