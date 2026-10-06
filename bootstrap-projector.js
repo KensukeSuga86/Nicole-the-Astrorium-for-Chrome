@@ -1,0 +1,1 @@
+bootAstrorium("./projector-app.js");

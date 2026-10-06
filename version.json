@@ -1,0 +1,26 @@
+{
+  "version": "1.1.0",
+  "name": "Nicole the Astrorium for Chrome",
+  "database": "0.3.3",
+  "architecture": "scene-state-v2-shared-webgl-sky-v2",
+  "databaseMode": "local-first",
+  "renderer": "hybrid-shared-webgl-v2+canvas2d",
+  "gpuMilkyWay": "shared-webgl-v2",
+  "mediaLibrary": "indexeddb-v1",
+  "locationFavorites": "shared-localstorage-v2",
+  "mediaPresentation": "screen-centered-overlay-v2",
+  "starCatalog": "d3-celestial-stars8-indexeddb-v1",
+  "starMagnitudeMode": "fov-lod-v1",
+  "gpuConstellationArt": "shared-webgl-v1",
+  "gpuMeteors": "shared-webgl-v1",
+  "gpuAtmosphere": "shared-webgl-v1",
+  "naturalDeepSky": "gpu-v2",
+  "features": {
+    "shortcutConfiguration": "user-rebindable-v1",
+    "locationKeyboardTravel": "continuous-v1",
+    "allSkyLabelOrientation": "radial-down-v1",
+    "descriptionEditor": "external-authoritative-editor-v1",
+    "descriptionOwnership": "nicole-astronomy-database-editor-only-v1",
+    "zodiac12MasterToggle": "constellation-name-line-art-v1"
+  }
+}

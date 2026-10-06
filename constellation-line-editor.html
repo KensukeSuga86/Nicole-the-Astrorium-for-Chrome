@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nicole 星座編集ウィンドウ v1.1.0</title>
+<style>
+:root{color-scheme:dark;--bg:#02060b;--panel:#08111d;--line:#2f4a62;--text:#dbeaf5;--muted:#86a0b5;--violet:#c084fc;--cyan:#67d8ff;--green:#9be15d;--amber:#ffd36e}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif}button,input,select,textarea{font:inherit}button,select,input,textarea{background:#101f30;color:#dcecf7;border:1px solid #395773;border-radius:6px;padding:6px 8px;font-size:12px}button{cursor:pointer}button:hover{background:#17334d}button.active{border-color:var(--violet);background:#2b183d;color:#f4dcff}button.danger{border-color:#9c5262;color:#ffd3db}button.finish{border-color:#8fd35e;color:#dfffca;background:#13220d}button.console{border-color:#66a9db;color:#d8efff;background:#102538}button.save{border-color:#7cc8a5;color:#d5ffec;background:#10281f}button.star-mode{border-color:#4d9eb8}button.star-mode.active{border-color:var(--cyan);background:#0c3140;color:#d7f7ff}button.remove-star-mode{border-color:#a65a69;color:#ffd7df}button.remove-star-mode.active{border-color:#ff8799;background:#3a1520;color:#ffe3e8}.member-chip{border-color:#557b9b;color:#d9ecfa}.removed-chip{border-color:#81505b;color:#ffccd5;background:#201016}
+#app{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto}.stage{position:relative;min-height:0;background:#000}.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.hud{position:absolute;top:10px;left:12px;right:12px;display:flex;gap:8px;align-items:center;pointer-events:none;text-shadow:0 2px 4px #000}.hud b{font-size:15px}.hud span{font-size:11px;color:#9eb7c9}.mode-badge{font-size:10px;padding:3px 6px;border-radius:999px;border:1px solid #536d84;color:#bcd0df}.mode-badge.custom{border-color:#a06ac6;color:#ebcfff;background:#25152f}.star-hover{position:absolute;pointer-events:none;background:#07121eee;border:1px solid #3f6d8d;border-radius:6px;padding:4px 7px;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;display:none;z-index:5;white-space:nowrap}.dock{border-top:1px solid #334a63;background:#08111d;max-height:49vh;overflow:auto}.bar{padding:7px 9px;border-bottom:1px solid #263d53;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.bar .spacer{flex:1}.group,.bar .group{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.bar label{font-size:10px;color:#86a0b5}.bar input[type="number"]{width:82px}.bar input[type="datetime-local"]{width:190px}.main-select{min-width:205px}.status{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9b7df}.tip{font-size:10px;color:#7893a8}.editor-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) minmax(0,.9fr);gap:8px;padding:8px 10px 10px}.editor-card{border:1px solid var(--line);border-radius:8px;background:#0b1522;padding:8px;min-width:0}.editor-card h3{font-size:12px;margin:0 0 6px;color:#dcecf7}.editor-card .readout{font:10px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#a8c5db;margin-top:6px;word-break:break-all}.art-grid{display:grid;grid-template-columns:repeat(6,minmax(64px,1fr));gap:4px;margin-top:6px}.art-grid button{padding:6px 5px}.workflow-grid{display:grid;grid-template-columns:110px 1fr;gap:5px;align-items:center}.workflow-grid textarea{grid-column:1/-1;width:100%;min-height:58px;resize:vertical}.progress{font-size:11px;color:#b7d5c2}.star-list{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;max-height:70px;overflow:auto}.star-chip{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 6px;border-color:#397e94;color:#ccefff}.star-chip:hover{border-color:#dc7787;color:#ffd5dc}.custom-grid{display:grid;grid-template-columns:minmax(120px,1.4fr) minmax(80px,.6fr);gap:5px}.custom-actions,.checks{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:6px}.checks{font-size:11px;color:#b9ccda}.checks label{display:flex;gap:4px;align-items:center}.small-note{font-size:10px;color:#7893a8;margin-top:5px}.art-card{border-color:#35566f}.workflow-card{border-color:#355e4d}.custom-card{border-color:#5b4672}.env-readout{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#91aec3}.saved-flash{color:#9be15d!important}
+@media(max-width:1250px){.editor-grid{grid-template-columns:1fr 1fr}.custom-card{grid-column:1/-1}.art-grid{grid-template-columns:repeat(4,minmax(64px,1fr))}}@media(max-width:780px){.editor-grid{grid-template-columns:1fr}.custom-card{grid-column:auto}.art-grid{grid-template-columns:repeat(3,minmax(64px,1fr))}.dock{max-height:58vh}}
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#061a44">
+<link rel="apple-touch-icon" href="./icon-180.png">
+</head>
+<body>
+<div id="app">
+  <div class="stage" id="stage">
+    <canvas id="sky"></canvas><canvas id="overlay"></canvas>
+    <div class="hud"><b id="title">星座編集</b><span id="subtitle"></span><span class="mode-badge" id="modeBadge">標準星座</span></div>
+    <div class="star-hover" id="hover"></div>
+  </div>
+  <div class="dock">
+    <div class="bar">
+      <div class="group">
+        <label>編集する星座</label><select id="constellation" class="main-select"></select>
+        <button id="prevConstellation">← 前の星座</button><button id="nextConstellation">次の星座 →</button><button id="nextIncomplete">次の未完了星座</button>
+      </div>
+      <div class="spacer"></div>
+      <div class="group"><span class="status" id="status">読込中…</span><button id="saveNow" class="save">保存</button><button id="projectExport">プロジェクトJSON保存</button><button id="projectImport">JSON読込</button><button id="projectRestore">読込前に戻す</button><input id="projectImportFile" type="file" accept="application/json,.json" hidden><button id="backConsole" class="console">コンソールに戻る</button><button id="saveClose" class="finish">保存して閉じる</button></div>
+    </div>
+
+    <div class="bar">
+      <div class="group">
+        <button id="modePan">表示移動</button><button id="modeAdd" class="active">線を追加</button><button id="modeDelete">線を削除</button><button id="modeStar" class="star-mode">周辺星を星座に追加</button><button id="modeRemoveStar" class="remove-star-mode">星座に含まれる星を削除</button>
+        <button id="undo">ひとつ戻す</button><button id="clear" class="danger">線を全消去</button><button id="reset">初期線へ戻す</button><button id="center">星座を中央へ</button><button id="southCulmination">南中</button><button id="northCulmination">北中</button><button id="zoomIn">視野−</button><button id="zoomOut">視野＋</button>
+      </div>
+      <div class="spacer"></div><span class="tip" id="modeTip">線追加：星を2つ順番にクリック。必要な周辺星はクリック時に自動で星座構成星へ追加されます。</span>
+    </div>
+
+    <div class="bar">
+      <div class="group"><label>方角</label><button data-dir="0">北</button><button data-dir="90">東</button><button data-dir="180">南</button><button data-dir="270">西</button><label>Az</label><input id="azInput" type="number" min="0" max="360" step="1"><label>高度</label><input id="altInput" type="number" min="-20" max="90" step="1"><button id="applyCamera">適用</button></div>
+      <div class="group"><label>時刻</label><input id="timeInput" type="datetime-local" step="60"><button id="timeNow">現在</button><button data-step="-600000">−10分</button><button data-step="600000">＋10分</button><button data-step="-3600000">−1時間</button><button data-step="3600000">＋1時間</button></div>
+      <div class="group"><label>緯度</label><input id="latInput" type="number" min="-90" max="90" step="0.0001"><label>経度</label><input id="lonInput" type="number" min="-180" max="180" step="0.0001"><button id="applyLocation">位置を適用</button><select id="editorFavorite"><option value="">お気に入り地点</option></select><button id="editorFavoriteApply">お気に入りを適用</button><button id="editorFavoriteSave">現在位置を保存</button><button id="radecToggle">赤経赤緯線 OFF</button><button id="starNamesToggle">恒星名 OFF</button><button id="constContextToggle">星座線＋星座名 OFF</button></div>
+      <span class="env-readout" id="envReadout"></span>
+    </div>
+
+    <div class="editor-grid">
+      <section class="editor-card art-card">
+        <h3>🖼 選択星座の星座絵配置</h3>
+        <div class="group"><b id="artTarget">—</b> <button id="artReset">配置を初期値へ</button><button id="artImageReplace">星座絵PNGを差し替え</button><button id="artImageReset">標準画像に戻す</button><input id="artImageFile" type="file" accept="image/png,.png" hidden></div>
+        <div class="art-grid"><button data-artcmd="left">← RA</button><button data-artcmd="right">RA →</button><button data-artcmd="up">Dec ↑</button><button data-artcmd="down">Dec ↓</button><button data-artcmd="rotL">↶ 回転</button><button data-artcmd="rotR">回転 ↷</button><button data-artcmd="wMinus">幅−</button><button data-artcmd="wPlus">幅＋</button><button data-artcmd="hMinus">高さ−</button><button data-artcmd="hPlus">高さ＋</button><button data-artcmd="flipX">左右反転</button><button data-artcmd="flipY">上下反転</button></div>
+        <div class="readout" id="artReadout">—</div><div class="readout" id="artImageReadout">画像：標準</div><div class="small-note">RA / Dec / 回転 / 幅 / 高さは長押しで連続調整。星座絵は透過PNGを選択すると、このMacのNicoleに差し替え画像として保存されます。元画像は削除されず「標準画像に戻す」で復元できます。プロジェクトJSON保存時は差し替えPNGも同梱されます。</div>
+      </section>
+
+      <section class="editor-card workflow-card">
+        <h3>✅ 作業進捗・星座構成星</h3>
+        <div class="workflow-grid"><label>進捗</label><select id="workflowStatus"><option value="todo">未着手</option><option value="doing">調整中</option><option value="done">完了</option></select><textarea id="workflowNote" placeholder="この星座のメモ"></textarea></div>
+        <div class="progress" id="workflowProgress">完了 0/88</div>
+        <div class="readout" id="memberStarReadout">星座所属星 —</div><div class="star-list" id="memberStars"></div>
+        <div class="readout" id="removedMemberReadout">所属から除外した星 0個</div><div class="star-list" id="removedMemberStars"></div>
+        <div class="readout" id="starReadout">追加星なし</div><div class="star-list" id="extraStars"></div>
+        <div class="small-note">「周辺星を星座に追加」で不足する星を追加できます。「星座に含まれる星を削除」では、その星座への所属だけを非破壊で除外します。所属星・追加星のチップからも削除可能です。星座線で使用中の星は、先にその星につながる線を削除してください。除外済みの星は＋チップで戻せます。</div>
+      </section>
+
+      <section class="editor-card custom-card">
+        <h3>✨ 自作星座</h3>
+        <div class="group"><select id="customSelect"></select><button id="customNew">新しい星座を作る</button><button id="customEdit">この自作星座を編集</button><button id="editStandard">標準星座へ戻る</button></div>
+        <div class="custom-grid" style="margin-top:6px"><input id="customName" placeholder="星座名（例：ニコル座）"><input id="customAbbr" placeholder="略号（例：NIC）"></div>
+        <div class="checks"><label><input id="customVisible" type="checkbox" checked> Projectorに線を表示</label><label><input id="customShowName" type="checkbox" checked> 名前を表示</label></div>
+        <div class="custom-actions"><button id="customSaveMeta">名前・設定を保存</button><button id="customDelete" class="danger">削除</button></div>
+        <div class="readout" id="customReadout">自作星座はまだありません。</div><div class="small-note">自作星座でも周辺星を選んで線を作成できます。選んだ星の座標も一緒に保存されます。</div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="./art-image-store.js"></script><script src="./location-favorites.js"></script><script src="./db-bridge.js"></script><script src="./database/db-bundle.js"></script><script src="./assets/art-data.js"></script><script src="./places-offline.js"></script><script src="./database-bootstrap.js"></script><script src="./bootstrap-line-editor.js"></script>
+<script src="./pwa-register.js"></script></body>
+</html>
