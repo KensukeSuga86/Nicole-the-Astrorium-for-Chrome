@@ -1,7 +1,7 @@
 {
-  "name": "Nicole the Astrorium",
-  "short_name": "Astrorium",
-  "description": "Nicole the Astrorium — interactive planetarium web application",
+  "name": "Nicole the Astrorium for Education",
+  "short_name": "Nicole 2E",
+  "description": "天文現象を見せる・動かす・比較するブラウザ教材",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,17 @@
   "theme_color": "#061a44",
   "orientation": "any",
   "icons": [
-    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
