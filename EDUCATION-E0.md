@@ -24,10 +24,10 @@ Free Sky exposes only the requested basic controls. Advanced rendering layers ar
 
 ## Validation
 
-Passed: JavaScript syntax, service-worker precache file existence, git diff whitespace checks; shared engine, renderer, SceneState and database unchanged. Browser smoke test is supplied, but execution in this environment was initially blocked because the installed Playwright browser executable is absent. Runtime rendering, offline reload and console checks must not be treated as verified until the browser test runs.
+Passed: JavaScript syntax, service-worker precache file existence, git diff whitespace checks; shared engine, renderer, SceneState and database unchanged. Browser checks passed in headless Chromium 153 with SwiftShader: school selection and eight lesson placeholders, Free Sky navigation, six basic layer controls, location updates, clock play/pause, solar-body layer pixel differences, WebGL rendering with no fallback frames, forced GPU context loss switching to Canvas, startup with WebGL disabled, offline Home/Free Sky reload, original Presenter self-check, and 390px mobile layout without horizontal overflow. No page errors or console errors were captured. An additional native Canvas 2D render and Sun/Moon/Jupiter coordinate calculation completed successfully. This software GPU environment does not verify physical GPU behavior or Chromebook performance.
 
-Run a static server on port 8765 at the repository root, install Playwright and Chromium, then run `node tests/education-e0.cjs`.
+Install Playwright and its Chromium browser, then run `node tests/education-e0.cjs`. The test starts its own local static server. Optional environment variables `E0_BROWSER_EXECUTABLE` and `E0_BROWSER_ARGS` allow an alternate Chromium runtime.
 
 ## Next steps
 
-Run browser checks and Chromebook performance measurements; refine quality profiles and suspend unnecessary rendering; verify Edge/Safari; design grade-specific curriculum mapping against official learning guidelines and implement each lesson. Keep the DB-provider/session boundary when introducing a compact dataset. Audit dependencies before deleting any legacy code. Existing manual is for the legacy version; education-specific instructions currently appear directly in Free Sky.
+Run physical Chromebook performance measurements and hardware GPU checks; refine quality profiles and suspend unnecessary rendering; verify Edge/Safari; design grade-specific curriculum mapping against official learning guidelines and implement each lesson. Keep the DB-provider/session boundary when introducing a compact dataset. Audit dependencies before deleting any legacy code. Existing manual is for the legacy version; education-specific instructions currently appear directly in Free Sky.
