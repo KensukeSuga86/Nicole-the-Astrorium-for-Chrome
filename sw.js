@@ -1,7 +1,6 @@
 /* Nicole the Astrorium — GitHub Pages PWA service worker */
-const CACHE = 'nicole-astrorium-education-e0-1';
+const CACHE = 'nicole-astrorium-v1.1.0-pages-2';
 const CORE = [
-  './education-sky.html','./education/education-app.js','./education/education-home.js','./education/education-lessons.js','./education/education-sky.js','./education/education.css',
   './','./index.html','./presenter.html','./projector.html',
   './manifest.webmanifest','./icon-192.png','./icon-512.png','./quick-manual.html','./QUICK-MANUAL.md',
   './art-image-store.js','./media-library.js','./location-favorites.js','./db-bridge.js',
@@ -14,7 +13,7 @@ self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(()=>self.skipWaiting()));
 });
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k.startsWith('nicole-astrorium-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
@@ -27,6 +26,6 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE).then(cache => cache.put(event.request, copy));
       }
       return resp;
-    }).catch(() => event.request.mode === 'navigate' ? caches.match('./index.html') : Response.error()))
+    }).catch(() => caches.match('./index.html')))
   );
 });
